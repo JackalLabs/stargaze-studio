@@ -523,6 +523,10 @@ export const UploadDetails = ({ onChange, importedUploadDetails }: UploadDetails
               <Anchor className="font-bold text-plumbus hover:underline" href="https://fleek.xyz/">
                 Fleek
               </Anchor>{' '}
+              or{' '}
+              <Anchor className="font-bold text-plumbus hover:underline" href="https://pin.jackalprotocol.com/">
+                Jackal Pin
+              </Anchor>{' '}
               and upload your assets & metadata manually to get a base URI for your collection.
             </p>
             <div>

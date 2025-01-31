@@ -167,6 +167,7 @@ declare namespace NodeJS {
     readonly NEXT_PUBLIC_CW4_GROUP_CODE_ID: string
 
     readonly NEXT_PUBLIC_PINATA_ENDPOINT_URL: string
+    readonly NEXT_PUBLIC_JACKAL_PIN_ENDPOINT_URL: string
     readonly NEXT_PUBLIC_API_URL: string
     readonly NEXT_PUBLIC_BLOCK_EXPLORER_URL: string
     readonly NEXT_PUBLIC_NETWORK: string

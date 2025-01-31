@@ -213,6 +213,7 @@ export const SPLITS_CODE_ID = parseInt(process.env.NEXT_PUBLIC_SPLITS_CODE_ID, 1
 export const CW4_GROUP_CODE_ID = parseInt(process.env.NEXT_PUBLIC_CW4_GROUP_CODE_ID, 10)
 
 export const PINATA_ENDPOINT_URL = process.env.NEXT_PUBLIC_PINATA_ENDPOINT_URL
+export const JACKAL_PIN_ENDPOINT_URL = process.env.NEXT_PUBLIC_JACKAL_PIN_ENDPOINT_URL
 export const NETWORK = process.env.NEXT_PUBLIC_NETWORK
 export const API_URL = process.env.NEXT_PUBLIC_API_URL
 export const STARGAZE_URL = process.env.NEXT_PUBLIC_STARGAZE_WEBSITE_URL

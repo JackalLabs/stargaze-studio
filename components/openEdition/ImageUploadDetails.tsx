@@ -391,6 +391,10 @@ export const ImageUploadDetails = ({ onChange, importedImageUploadDetails }: Ima
               <Anchor className="font-bold text-plumbus hover:underline" href="https://fleek.xyz/">
                 Fleek
               </Anchor>{' '}
+              or{' '}
+              <Anchor className="font-bold text-plumbus hover:underline" href="https://pin.jackalprotocol.com/">
+                Jackal Pin
+              </Anchor>{' '}
               and upload your asset manually to get an asset URL for your NFT.
             </p>
             <div className="flex flex-row w-full">
