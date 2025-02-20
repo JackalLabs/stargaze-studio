@@ -11,25 +11,6 @@ export const uploadToJackal = async (
   jackalPinSecretKey: string,
   fileType: UploadFileType,
 ): Promise<string> => {
-  if (fileType === 'cover' || fileType === 'thumbnail') {
-    const data = new FormData()
-    fileArray.forEach((file) => {
-      data.append('files', file)
-    })
-    const res = await axios.post(`${JACKAL_PIN_ENDPOINT_URL}/v1/files`, data, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${jackalPinSecretKey}`,
-      },
-    })
-
-    if (res.status !== 200) {
-      throw 'could not upload file to Jackal Pin'
-    }
-
-    return res.data[0].cid
-  }
-
   const res = await axios.post(`${JACKAL_PIN_ENDPOINT_URL}/collections/${fileType}`, null, {
     method: 'POST',
     headers: {
