@@ -72,7 +72,7 @@ export const uploadToJackal = async (
   await Promise.all(ps)
 
   // eslint-disable-next-line no-promise-executor-return
-  await new Promise((resolve) => setTimeout(resolve, 20000))
+  await new Promise((resolve) => setTimeout(resolve, 30000))
 
   const finalRes = await axios.get(`${JACKAL_PIN_ENDPOINT_URL}/collections/${collectionId}`, {
     headers: {

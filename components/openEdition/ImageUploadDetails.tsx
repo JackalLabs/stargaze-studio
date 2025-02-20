@@ -469,25 +469,6 @@ export const ImageUploadDetails = ({ onChange, importedImageUploadDetails }: Ima
                 </div>
                 <div className="ml-2 form-check form-check-inline">
                   <input
-                    checked={uploadService === 'fleek'}
-                    className="peer sr-only"
-                    id="inlineRadio5"
-                    name="inlineRadioOptions5"
-                    onClick={() => {
-                      setUploadService('fleek')
-                    }}
-                    type="radio"
-                    value="fleek"
-                  />
-                  <label
-                    className="inline-block py-1 px-2 text-gray peer-checked:text-white hover:text-white peer-checked:bg-black hover:rounded-sm peer-checked:border-b-2 hover:border-b-2 peer-checked:border-plumbus hover:border-plumbus cursor-pointer form-check-label"
-                    htmlFor="inlineRadio5"
-                  >
-                    Upload using Fleek
-                  </label>
-                </div>
-                <div className="ml-2 form-check form-check-inline">
-                  <input
                     checked={uploadService === 'jackalPin'}
                     className="peer sr-only"
                     id="inlineRadio6"
@@ -503,6 +484,25 @@ export const ImageUploadDetails = ({ onChange, importedImageUploadDetails }: Ima
                     htmlFor="inlineRadio6"
                   >
                     Upload using Jackal Pin
+                  </label>
+                </div>
+                <div className="ml-2 form-check form-check-inline">
+                  <input
+                    checked={uploadService === 'fleek'}
+                    className="peer sr-only"
+                    id="inlineRadio5"
+                    name="inlineRadioOptions5"
+                    onClick={() => {
+                      setUploadService('fleek')
+                    }}
+                    type="radio"
+                    value="fleek"
+                  />
+                  <label
+                    className="inline-block py-1 px-2 text-gray peer-checked:text-white hover:text-white peer-checked:bg-black hover:rounded-sm peer-checked:border-b-2 hover:border-b-2 peer-checked:border-plumbus hover:border-plumbus cursor-pointer form-check-label"
+                    htmlFor="inlineRadio5"
+                  >
+                    Upload using Fleek
                   </label>
                 </div>
               </div>
