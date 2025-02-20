@@ -55,6 +55,7 @@ export interface OffChainMetadataUploadDetailsDataProps {
   web3StorageEmail?: string
   web3StorageLoginSuccessful?: boolean
   fleekClientId?: string
+  jackalPinSecretKey?: string
   uploadMethod: UploadMethod
   tokenURI?: string
   imageUrl?: string
@@ -101,6 +102,14 @@ export const OffChainMetadataUploadDetails = ({
     name: 'pinataSecretKey',
     title: 'Pinata Secret Key',
     placeholder: 'Enter Pinata Secret Key',
+    defaultValue: '',
+  })
+
+  const jackalPinSecretKeyState = useInputState({
+    id: 'jackal-pin-secret-key',
+    name: 'jackalPinSecretKey',
+    title: 'Jackal Pin Secret Key',
+    placeholder: 'Enter Jackal Pin Secret Key',
     defaultValue: '',
   })
 
@@ -337,6 +346,7 @@ export const OffChainMetadataUploadDetails = ({
         web3StorageEmail: web3StorageEmailState.value,
         web3StorageLoginSuccessful,
         fleekClientId: fleekClientIdState.value,
+        jackalPinSecretKey: jackalPinSecretKeyState.value,
         uploadMethod,
         tokenURI: tokenUriState.value
           .replace('IPFS://', 'ipfs://')
@@ -371,6 +381,7 @@ export const OffChainMetadataUploadDetails = ({
     web3StorageEmailState.value,
     web3StorageLoginSuccessful,
     fleekClientIdState.value,
+    jackalPinSecretKeyState.value,
     uploadMethod,
     tokenUriState.value,
     coverImageUrlState.value,
@@ -399,6 +410,7 @@ export const OffChainMetadataUploadDetails = ({
       pinataSecretKeyState.onChange(importedOffChainMetadataUploadDetails.pinataSecretKey || '')
       web3StorageEmailState.onChange(importedOffChainMetadataUploadDetails.web3StorageEmail || '')
       fleekClientIdState.onChange(importedOffChainMetadataUploadDetails.fleekClientId || '')
+      jackalPinSecretKeyState.onChange(importedOffChainMetadataUploadDetails.jackalPinSecretKey || '')
       setUploadMethod(importedOffChainMetadataUploadDetails.uploadMethod)
       tokenUriState.onChange(importedOffChainMetadataUploadDetails.tokenURI || '')
       coverImageUrlState.onChange(importedOffChainMetadataUploadDetails.imageUrl || '')
@@ -578,6 +590,9 @@ export const OffChainMetadataUploadDetails = ({
                 </Conditional>
                 <Conditional test={uploadService === 'fleek'}>
                   <TextInput {...fleekClientIdState} className="w-3/4" />
+                </Conditional>
+                <Conditional test={uploadService === 'jackalPin'}>
+                  <TextInput {...jackalPinSecretKeyState} className="w-3/4" />
                 </Conditional>
                 <Conditional test={uploadService === 'web3-storage'}>
                   <div className="flex flex-row w-full">

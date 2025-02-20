@@ -342,6 +342,7 @@ const CollectionCreationPage: NextPage = () => {
           collectionDetails?.name as string,
           uploadDetails.fleekClientId as string,
           collectionDetails?.name as string,
+          uploadDetails.jackalPinSecretKey as string,
         )
 
         setUploading(false)
@@ -401,6 +402,7 @@ const CollectionCreationPage: NextPage = () => {
           collectionDetails?.name as string,
           uploadDetails.fleekClientId as string,
           collectionDetails?.name as string,
+          uploadDetails.jackalPinSecretKey as string,
         )
 
         setUploading(false)
@@ -913,6 +915,7 @@ const CollectionCreationPage: NextPage = () => {
         collectionDetails?.name as string,
         uploadDetails.fleekClientId as string,
         collectionDetails?.name as string,
+        uploadDetails.jackalPinSecretKey as string,
       )
         .then(async (assetUri: string) => {
           let thumbnailUri: string | undefined
@@ -927,6 +930,7 @@ const CollectionCreationPage: NextPage = () => {
               collectionDetails?.name as string,
               uploadDetails.fleekClientId as string,
               collectionDetails?.name as string,
+              uploadDetails.jackalPinSecretKey as string,
             )
           }
           console.log('Thumbnail URI: ', thumbnailUri)
@@ -997,6 +1001,7 @@ const CollectionCreationPage: NextPage = () => {
                     collectionDetails?.name as string,
                     uploadDetails.fleekClientId as string,
                     collectionDetails?.name as string,
+                    uploadDetails.jackalPinSecretKey as string,
                   )
                     .then(resolve)
                     .catch(reject)
@@ -1059,6 +1064,7 @@ const CollectionCreationPage: NextPage = () => {
                 collectionDetails?.name as string,
                 uploadDetails.fleekClientId as string,
                 collectionDetails?.name as string,
+                uploadDetails.jackalPinSecretKey as string,
               )
                 .then(resolve)
                 .catch(reject)

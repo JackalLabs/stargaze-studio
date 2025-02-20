@@ -535,6 +535,7 @@ export const UploadDetails = ({
     web3StorageEmailState.value,
     web3StorageLoginSuccessful,
     fleekClientIdState.value,
+    jackalPinSecretKeyState.value,
     uploadMethod,
     baseTokenUriState.value,
     coverImageUrlState.value,
@@ -564,6 +565,7 @@ export const UploadDetails = ({
         pinataApiKeyState.onChange(importedUploadDetails.pinataApiKey || '')
         pinataSecretKeyState.onChange(importedUploadDetails.pinataSecretKey || '')
         fleekClientIdState.onChange(importedUploadDetails.fleekClientId || '')
+        jackalPinSecretKeyState.onChange(importedUploadDetails.jackalPinSecretKey || '')
         baseTokenUriState.onChange(importedUploadDetails.baseTokenURI || '')
         coverImageUrlState.onChange(importedUploadDetails.imageUrl || '')
       } else if (importedUploadDetails.uploadMethod === 'existing') {

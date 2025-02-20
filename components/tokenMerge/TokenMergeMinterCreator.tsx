@@ -182,6 +182,8 @@ export const TokenMergeMinterCreator = ({
         throw new Error('Please enter a valid Web3.Storage email')
       } else if (uploadDetails.uploadService === 'fleek' && uploadDetails.fleekClientId === '') {
         throw new Error('Please enter a valid Fleek client ID')
+      } else if (uploadDetails.uploadService === 'jackalPin' && uploadDetails.jackalPinSecretKey === '') {
+        throw new Error('Please enter a valid Jackal Pin secret key')
       }
       if (uploadDetails.uploadService === 'web3-storage' && !uploadDetails.web3StorageLoginSuccessful)
         throw new Error('Please complete the login process for Web3.Storage')
@@ -357,6 +359,7 @@ export const TokenMergeMinterCreator = ({
           collectionDetails?.name as string,
           uploadDetails.fleekClientId as string,
           collectionDetails?.name as string,
+          uploadDetails.jackalPinSecretKey as string,
         )
 
         setUploading(false)
@@ -395,6 +398,7 @@ export const TokenMergeMinterCreator = ({
         collectionDetails?.name as string,
         uploadDetails.fleekClientId as string,
         collectionDetails?.name as string,
+        uploadDetails.jackalPinSecretKey as string,
       )
         .then(async (assetUri: string) => {
           let thumbnailUri: string | undefined
@@ -409,6 +413,7 @@ export const TokenMergeMinterCreator = ({
               collectionDetails?.name as string,
               uploadDetails.fleekClientId as string,
               collectionDetails?.name as string,
+              uploadDetails.jackalPinSecretKey as string,
             )
           }
 
@@ -477,6 +482,7 @@ export const TokenMergeMinterCreator = ({
                   collectionDetails?.name as string,
                   uploadDetails.fleekClientId as string,
                   collectionDetails?.name as string,
+                  uploadDetails.jackalPinSecretKey as string,
                 )
                   .then(resolve)
                   .catch(reject)

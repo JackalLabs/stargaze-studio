@@ -48,6 +48,7 @@ export interface UploadDetailsDataProps {
   web3StorageEmail?: EmailAddress
   web3StorageLoginSuccessful?: boolean
   fleekClientId?: string
+  jackalPinSecretKey?: string
   uploadMethod: UploadMethod
   baseTokenURI?: string
   imageUrl?: string
@@ -116,6 +117,14 @@ export const UploadDetails = ({ onChange, importedUploadDetails }: UploadDetails
     name: 'fleekClientId',
     title: 'Fleek Client ID',
     placeholder: 'Enter Fleek Client ID',
+    defaultValue: '',
+  })
+
+  const jackalPinSecretKeyState = useInputState({
+    id: 'jackal-pin-secret-key',
+    name: 'jackalPinSecretKey',
+    title: 'Jackal Pin Secret Key',
+    placeholder: 'Enter Jackal Pin Secret Key',
     defaultValue: '',
   })
 
@@ -391,6 +400,7 @@ export const UploadDetails = ({ onChange, importedUploadDetails }: UploadDetails
         web3StorageEmail: web3StorageEmailState.value as EmailAddress,
         web3StorageLoginSuccessful,
         fleekClientId: fleekClientIdState.value,
+        jackalPinSecretKey: jackalPinSecretKeyState.value,
         uploadMethod,
         baseTokenURI: baseTokenUriState.value
           .replace('IPFS://', 'ipfs://')
@@ -424,6 +434,7 @@ export const UploadDetails = ({ onChange, importedUploadDetails }: UploadDetails
     web3StorageEmailState.value,
     web3StorageLoginSuccessful,
     fleekClientIdState.value,
+    jackalPinSecretKeyState.value,
     uploadMethod,
     baseTokenUriState.value,
     coverImageUrlState.value,
@@ -452,6 +463,7 @@ export const UploadDetails = ({ onChange, importedUploadDetails }: UploadDetails
         pinataApiKeyState.onChange(importedUploadDetails.pinataApiKey || '')
         pinataSecretKeyState.onChange(importedUploadDetails.pinataSecretKey || '')
         fleekClientIdState.onChange(importedUploadDetails.fleekClientId || '')
+        jackalPinSecretKeyState.onChange(importedUploadDetails.jackalPinSecretKey || '')
         baseTokenUriState.onChange(importedUploadDetails.baseTokenURI || '')
         coverImageUrlState.onChange(importedUploadDetails.imageUrl || '')
       } else if (importedUploadDetails.uploadMethod === 'existing') {
@@ -519,7 +531,7 @@ export const UploadDetails = ({ onChange, importedUploadDetails }: UploadDetails
               <Anchor className="font-bold text-plumbus hover:underline" href="https://www.pinata.cloud/">
                 Pinata
               </Anchor>{' '}
-              or{' '}
+              ,{' '}
               <Anchor className="font-bold text-plumbus hover:underline" href="https://fleek.xyz/">
                 Fleek
               </Anchor>{' '}
@@ -609,65 +621,118 @@ export const UploadDetails = ({ onChange, importedUploadDetails }: UploadDetails
                     Upload using Fleek
                   </label>
                 </div>
-              </div>
 
-              <div className="flex w-full">
-                <Conditional test={uploadService === 'pinata'}>
-                  <TextInput {...pinataApiKeyState} className="w-full" />
-                  <div className="w-[20px]" />
-                  <TextInput {...pinataSecretKeyState} className="w-full" />
-                </Conditional>
-                <Conditional test={uploadService === 'fleek'}>
-                  <TextInput {...fleekClientIdState} className="w-3/4" />
-                </Conditional>
-                <Conditional test={uploadService === 'web3-storage'}>
-                  <div className="flex flex-row w-full">
-                    <TextInput {...web3StorageEmailState} className="w-[53%]" disabled={web3StorageLoginSuccessful} />
-                    <Button
-                      className={`mt-8 ml-2 h-[55%] ${
-                        web3StorageLoginSuccessful ? 'bg-blue-500 opacity-80 hover:bg-blue-600 ' : 'bg-stargaze'
-                      }`}
-                      disabled={web3StorageLoginSuccessful}
-                      isLoading={web3StorageLoginInProgress}
-                      onClick={attemptWeb3StorageLogin}
-                    >
-                      {web3StorageLoginSuccessful
-                        ? web3StorageLoginInProgress
-                          ? 'Logging in...'
-                          : 'Logged In'
-                        : 'Log In'}
-                    </Button>
-                    <Conditional test={web3StorageLoginInProgress || web3StorageLoginSuccessful}>
-                      <Button className="mt-8 ml-2 h-[55%]" onClick={cancelWeb3StorageLogin}>
-                        {web3StorageLoginInProgress ? 'Cancel' : 'Log Out'}
-                      </Button>
-                    </Conditional>
-                  </div>
-                </Conditional>
+                <div className="ml-2 form-check form-check-inline">
+                  <input
+                    checked={uploadService === 'jackalPin'}
+                    className="peer sr-only"
+                    id="inlineRadio6"
+                    name="inlineRadioOptions6"
+                    onClick={() => {
+                      setUploadService('jackalPin')
+                    }}
+                    type="radio"
+                    value="jackalPin"
+                  />
+                  <label
+                    className="inline-block py-1 px-2 text-gray peer-checked:text-white hover:text-white peer-checked:bg-black hover:rounded-sm peer-checked:border-b-2 hover:border-b-2 peer-checked:border-plumbus hover:border-plumbus cursor-pointer form-check-label"
+                    htmlFor="inlineRadio6"
+                  >
+                    Upload using Jackal Pin
+                  </label>
+                </div>
               </div>
             </div>
 
-            <div className="mt-6">
-              <div className="grid grid-cols-2">
-                <div className="w-full">
-                  <Conditional
-                    test={
-                      assetFilesArray.length > 0 &&
-                      metadataFilesArray.length > 0 &&
-                      assetFilesArray.length !== metadataFilesArray.length
-                    }
+            <div className="flex w-full">
+              <Conditional test={uploadService === 'pinata'}>
+                <TextInput {...pinataApiKeyState} className="w-full" />
+                <div className="w-[20px]" />
+                <TextInput {...pinataSecretKeyState} className="w-full" />
+              </Conditional>
+              <Conditional test={uploadService === 'fleek'}>
+                <TextInput {...fleekClientIdState} className="w-3/4" />
+              </Conditional>
+              <Conditional test={uploadService === 'jackalPin'}>
+                <TextInput {...jackalPinSecretKeyState} className="w-3/4" />
+              </Conditional>
+              <Conditional test={uploadService === 'web3-storage'}>
+                <div className="flex flex-row w-full">
+                  <TextInput {...web3StorageEmailState} className="w-[53%]" disabled={web3StorageLoginSuccessful} />
+                  <Button
+                    className={`mt-8 ml-2 h-[55%] ${
+                      web3StorageLoginSuccessful ? 'bg-blue-500 opacity-80 hover:bg-blue-600 ' : 'bg-stargaze'
+                    }`}
+                    disabled={web3StorageLoginSuccessful}
+                    isLoading={web3StorageLoginInProgress}
+                    onClick={attemptWeb3StorageLogin}
                   >
-                    <Alert className="mt-4 ml-8 w-3/4" type="warning">
-                      The number of assets and metadata files should match.
-                    </Alert>
+                    {web3StorageLoginSuccessful
+                      ? web3StorageLoginInProgress
+                        ? 'Logging in...'
+                        : 'Logged In'
+                      : 'Log In'}
+                  </Button>
+                  <Conditional test={web3StorageLoginInProgress || web3StorageLoginSuccessful}>
+                    <Button className="mt-8 ml-2 h-[55%]" onClick={cancelWeb3StorageLogin}>
+                      {web3StorageLoginInProgress ? 'Cancel' : 'Log Out'}
+                    </Button>
                   </Conditional>
+                </div>
+              </Conditional>
+            </div>
+          </div>
 
+          <div className="mt-6">
+            <div className="grid grid-cols-2">
+              <div className="w-full">
+                <Conditional
+                  test={
+                    assetFilesArray.length > 0 &&
+                    metadataFilesArray.length > 0 &&
+                    assetFilesArray.length !== metadataFilesArray.length
+                  }
+                >
+                  <Alert className="mt-4 ml-8 w-3/4" type="warning">
+                    The number of assets and metadata files should match.
+                  </Alert>
+                </Conditional>
+
+                <div>
+                  <label
+                    className="block mt-5 mr-1 mb-1 ml-8 w-full font-bold text-white dark:text-gray-300"
+                    htmlFor="assetFiles"
+                  >
+                    Asset Selection
+                  </label>
+                  <div
+                    className={clsx(
+                      'flex relative justify-center items-center mx-8 mt-2 space-y-4 w-full h-32',
+                      'rounded border-2 border-white/20 border-dashed',
+                    )}
+                  >
+                    <input
+                      accept="image/*, audio/*, video/*, .html, .pdf"
+                      className={clsx(
+                        'file:py-2 file:px-4 file:mr-4 file:bg-plumbus-light file:rounded file:border-0 cursor-pointer',
+                        'before:absolute before:inset-0 before:hover:bg-white/5 before:transition',
+                      )}
+                      id="assetFiles"
+                      multiple
+                      onChange={selectAssets}
+                      ref={assetFilesRef}
+                      type="file"
+                    />
+                  </div>
+                </div>
+
+                {assetFilesArray.length > 0 && (
                   <div>
                     <label
                       className="block mt-5 mr-1 mb-1 ml-8 w-full font-bold text-white dark:text-gray-300"
-                      htmlFor="assetFiles"
+                      htmlFor="metadataFiles"
                     >
-                      Asset Selection
+                      Metadata Selection
                     </label>
                     <div
                       className={clsx(
@@ -676,95 +741,65 @@ export const UploadDetails = ({ onChange, importedUploadDetails }: UploadDetails
                       )}
                     >
                       <input
-                        accept="image/*, audio/*, video/*, .html, .pdf"
+                        accept="application/json"
                         className={clsx(
                           'file:py-2 file:px-4 file:mr-4 file:bg-plumbus-light file:rounded file:border-0 cursor-pointer',
                           'before:absolute before:inset-0 before:hover:bg-white/5 before:transition',
                         )}
-                        id="assetFiles"
+                        id="metadataFiles"
                         multiple
-                        onChange={selectAssets}
-                        ref={assetFilesRef}
+                        onChange={selectMetadata}
+                        ref={metadataFilesRef}
                         type="file"
                       />
                     </div>
                   </div>
+                )}
 
-                  {assetFilesArray.length > 0 && (
-                    <div>
-                      <label
-                        className="block mt-5 mr-1 mb-1 ml-8 w-full font-bold text-white dark:text-gray-300"
-                        htmlFor="metadataFiles"
-                      >
-                        Metadata Selection
-                      </label>
-                      <div
+                {thumbnailCompatibleAssetFileNames.length > 0 && (
+                  <div>
+                    <label
+                      className="block mt-5 mr-1 mb-1 ml-8 w-full font-bold text-white dark:text-gray-300"
+                      htmlFor="thumbnailFiles"
+                    >
+                      {thumbnailCompatibleAssetFileNames.length > 1
+                        ? 'Thumbnail Selection for Compatible Assets (optional)'
+                        : 'Thumbnail Selection (optional)'}
+                    </label>
+                    <div
+                      className={clsx(
+                        'flex relative justify-center items-center mx-8 mt-2 space-y-4 w-full h-32',
+                        'rounded border-2 border-white/20 border-dashed',
+                      )}
+                    >
+                      <input
+                        accept="image/*"
                         className={clsx(
-                          'flex relative justify-center items-center mx-8 mt-2 space-y-4 w-full h-32',
-                          'rounded border-2 border-white/20 border-dashed',
+                          'file:py-2 file:px-4 file:mr-4 file:bg-plumbus-light file:rounded file:border-0 cursor-pointer',
+                          'before:absolute before:inset-0 before:hover:bg-white/5 before:transition',
                         )}
-                      >
-                        <input
-                          accept="application/json"
-                          className={clsx(
-                            'file:py-2 file:px-4 file:mr-4 file:bg-plumbus-light file:rounded file:border-0 cursor-pointer',
-                            'before:absolute before:inset-0 before:hover:bg-white/5 before:transition',
-                          )}
-                          id="metadataFiles"
-                          multiple
-                          onChange={selectMetadata}
-                          ref={metadataFilesRef}
-                          type="file"
-                        />
-                      </div>
+                        id="thumbnailFiles"
+                        multiple
+                        onChange={selectThumbnails}
+                        ref={thumbnailFilesRef}
+                        type="file"
+                      />
                     </div>
-                  )}
-
-                  {thumbnailCompatibleAssetFileNames.length > 0 && (
-                    <div>
-                      <label
-                        className="block mt-5 mr-1 mb-1 ml-8 w-full font-bold text-white dark:text-gray-300"
-                        htmlFor="thumbnailFiles"
-                      >
-                        {thumbnailCompatibleAssetFileNames.length > 1
-                          ? 'Thumbnail Selection for Compatible Assets (optional)'
-                          : 'Thumbnail Selection (optional)'}
-                      </label>
-                      <div
-                        className={clsx(
-                          'flex relative justify-center items-center mx-8 mt-2 space-y-4 w-full h-32',
-                          'rounded border-2 border-white/20 border-dashed',
-                        )}
-                      >
-                        <input
-                          accept="image/*"
-                          className={clsx(
-                            'file:py-2 file:px-4 file:mr-4 file:bg-plumbus-light file:rounded file:border-0 cursor-pointer',
-                            'before:absolute before:inset-0 before:hover:bg-white/5 before:transition',
-                          )}
-                          id="thumbnailFiles"
-                          multiple
-                          onChange={selectThumbnails}
-                          ref={thumbnailFilesRef}
-                          type="file"
-                        />
-                      </div>
-                    </div>
-                  )}
-                  <Conditional test={assetFilesArray.length >= 1}>
-                    <MetadataModal
-                      assetFile={assetFilesArray[metadataFileArrayIndex]}
-                      metadataFile={metadataFilesArray[metadataFileArrayIndex]}
-                      refresher={refreshMetadata}
-                      updateMetadata={updateMetadataFileArray}
-                    />
-                  </Conditional>
-                </div>
-
-                <Conditional test={assetFilesArray.length > 0}>
-                  <AssetsPreview assetFilesArray={assetFilesArray} updateMetadataFileIndex={updateMetadataFileIndex} />
+                  </div>
+                )}
+                <Conditional test={assetFilesArray.length >= 1}>
+                  <MetadataModal
+                    assetFile={assetFilesArray[metadataFileArrayIndex]}
+                    metadataFile={metadataFilesArray[metadataFileArrayIndex]}
+                    refresher={refreshMetadata}
+                    updateMetadata={updateMetadataFileArray}
+                  />
                 </Conditional>
               </div>
+
+              <Conditional test={assetFilesArray.length > 0}>
+                <AssetsPreview assetFilesArray={assetFilesArray} updateMetadataFileIndex={updateMetadataFileIndex} />
+              </Conditional>
             </div>
           </div>
         </Conditional>

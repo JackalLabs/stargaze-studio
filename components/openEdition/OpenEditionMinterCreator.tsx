@@ -246,6 +246,12 @@ export const OpenEditionMinterCreator = ({
       ) {
         throw new Error('Please enter valid Fleek client ID')
       }
+      if (
+        offChainMetadataUploadDetails.uploadService === 'jackalPin' &&
+        offChainMetadataUploadDetails.jackalPinSecretKey === ''
+      ) {
+        throw new Error('Please enter valid Jackal Pin secret key')
+      }
     }
     if (metadataStorageMethod === 'on-chain' && imageUploadDetails?.uploadMethod === 'new') {
       if (
@@ -256,6 +262,9 @@ export const OpenEditionMinterCreator = ({
       }
       if (imageUploadDetails.uploadService === 'fleek' && imageUploadDetails.fleekClientId === '') {
         throw new Error('Please enter valid Fleek client ID')
+      }
+      if (imageUploadDetails.uploadService === 'jackalPin' && imageUploadDetails.jackalPinSecretKey === '') {
+        throw new Error('Please enter valid Jackal Pin secret key')
       }
       if (imageUploadDetails.uploadService === 'web3-storage' && imageUploadDetails.web3StorageEmail === '') {
         throw new Error('Please enter a valid Web3.Storage email')
@@ -578,6 +587,7 @@ export const OpenEditionMinterCreator = ({
             collectionDetails?.name as string,
             offChainMetadataUploadDetails.fleekClientId as string,
             collectionDetails?.name as string,
+            offChainMetadataUploadDetails.jackalPinSecretKey as string,
           )
           const metadataUriWithBase = `ipfs://${metadataUri}/${(
             offChainMetadataUploadDetails.openEditionMinterMetadataFile as File
@@ -626,6 +636,7 @@ export const OpenEditionMinterCreator = ({
             collectionDetails?.name as string,
             imageUploadDetails.fleekClientId as string,
             collectionDetails?.name as string,
+            imageUploadDetails.jackalPinSecretKey as string,
           )
           const imageUriWithBase = `ipfs://${imageUri}/${(imageUploadDetails.assetFile as File).name}`
           setTokenImageUri(imageUriWithBase)
@@ -640,6 +651,7 @@ export const OpenEditionMinterCreator = ({
             collectionDetails?.name as string,
             imageUploadDetails.fleekClientId as string,
             collectionDetails?.name as string,
+            imageUploadDetails.jackalPinSecretKey as string,
           )
           const coverImageUriWithBase = `ipfs://${coverImageUri}/${(collectionDetails?.imageFile as File[])[0].name}`
           setCoverImageUrl(coverImageUriWithBase)
@@ -656,6 +668,7 @@ export const OpenEditionMinterCreator = ({
               collectionDetails?.name as string,
               imageUploadDetails.fleekClientId as string,
               collectionDetails?.name as string,
+              imageUploadDetails.jackalPinSecretKey as string,
             )
           const thumbnailUriWithBase = thumbnailUri
             ? `ipfs://${thumbnailUri}/${(imageUploadDetails.thumbnailFile as File).name}`
@@ -709,6 +722,7 @@ export const OpenEditionMinterCreator = ({
         collectionDetails?.name as string,
         offChainMetadataUploadDetails.fleekClientId as string,
         collectionDetails?.name as string,
+        offChainMetadataUploadDetails.jackalPinSecretKey as string,
       )
         .then(async (assetUri: string) => {
           let thumbnailUri: string | undefined
@@ -723,6 +737,7 @@ export const OpenEditionMinterCreator = ({
               collectionDetails?.name as string,
               offChainMetadataUploadDetails.fleekClientId as string,
               collectionDetails?.name as string,
+              offChainMetadataUploadDetails.jackalPinSecretKey as string,
             )
           const thumbnailUriWithBase = thumbnailUri
             ? `ipfs://${thumbnailUri}/${(offChainMetadataUploadDetails.thumbnailFile as File).name}`
@@ -778,6 +793,7 @@ export const OpenEditionMinterCreator = ({
               collectionDetails?.name as string,
               offChainMetadataUploadDetails.fleekClientId as string,
               collectionDetails?.name as string,
+              offChainMetadataUploadDetails.jackalPinSecretKey as string,
             )
               .then(resolve)
               .catch(reject)

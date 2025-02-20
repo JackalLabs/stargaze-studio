@@ -11,17 +11,74 @@ export const uploadToJackal = async (
   jackalPinSecretKey: string,
   fileType: UploadFileType,
 ): Promise<string> => {
-  const data = new FormData()
-  fileArray.forEach((file) => {
-    data.append('file', file, `${fileType}/${file.name}`)
-  })
+  if (fileType === 'cover' || fileType === 'thumbnail') {
+    const data = new FormData()
+    fileArray.forEach((file) => {
+      data.append('files', file)
+    })
+    const res = await axios.post(`${JACKAL_PIN_ENDPOINT_URL}/v1/files`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${jackalPinSecretKey}`,
+      },
+    })
 
-  const res = await axios.post(JACKAL_PIN_ENDPOINT_URL, data, {
-    withCredentials: true,
+    if (res.status !== 200) {
+      throw 'could not upload file to Jackal Pin'
+    }
+
+    return res.data[0].cid
+  }
+
+  const res = await axios.post(`${JACKAL_PIN_ENDPOINT_URL}/collections/${fileType}`, null, {
+    method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
       Authorization: `Bearer ${jackalPinSecretKey}`,
     },
   })
-  return res.data.IpfsHash
+
+  if (res.status !== 200) {
+    throw 'could not upload files to Jackal Pin'
+  }
+  const collectionId: number = res.data.id
+  const data = new FormData()
+  fileArray.forEach((file) => {
+    data.append('files', file)
+  })
+
+  const resTwo = await axios.post(`${JACKAL_PIN_ENDPOINT_URL}/v1/files`, data, {
+    headers: {
+      Authorization: `Bearer ${jackalPinSecretKey}`,
+    },
+  })
+
+  if (resTwo.status !== 200) {
+    throw 'could not upload files to Jackal Pin'
+  }
+
+  const resData = resTwo.data
+  const ps = []
+  for (const fileDetail of resData) {
+    const id: number = fileDetail.id
+
+    const p = axios.put(`${JACKAL_PIN_ENDPOINT_URL}/collections/${collectionId}/${id}`, null, {
+      headers: {
+        Authorization: `Bearer ${jackalPinSecretKey}`,
+      },
+    })
+    ps.push(p)
+  }
+
+  await Promise.all(ps)
+
+  // eslint-disable-next-line no-promise-executor-return
+  await new Promise((resolve) => setTimeout(resolve, 20000))
+
+  const finalRes = await axios.get(`${JACKAL_PIN_ENDPOINT_URL}/collections/${collectionId}`, {
+    headers: {
+      Authorization: `Bearer ${jackalPinSecretKey}`,
+    },
+  })
+
+  return finalRes.data.cid
 }
