@@ -808,7 +808,7 @@ export const SG721 = (client: SigningCosmWasmClient, txSigner: string): SG721Con
     admin?: string,
   ): Promise<InstantiateResponse> => {
     const result = await client.instantiate(senderAddress, codeId, initMsg, label, 'auto', {
-      funds: [coin('100', 'ustars')],
+      funds: [coin('3000000000', 'ustars')],
       memo: '',
       admin,
     })

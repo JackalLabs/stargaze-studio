@@ -212,7 +212,7 @@ const VendingMinterInstantiatePage: NextPage = () => {
         contract
           .use(VENDING_FACTORY_ADDRESS)
           ?.createVendingMinter(wallet.address || '', msg, [
-            coin('100', 'ustars'),
+            coin('3000000000', 'ustars'),
           ]) as Promise<CreateVendingMinterResponse>,
         {
           loading: 'Instantiating contract...',
